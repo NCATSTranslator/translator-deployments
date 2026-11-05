@@ -1,70 +1,241 @@
-# Translator Deployment Standardization: Application Owner Questionnaire
+name: "Translator Deployment Standardization: Application Owner Questionnaire"
+description: Application owner questionnaire for standardizing Translator deployments.
+title: "[Deployment questionnaire]: <application name>"
+labels: ["deployment-questionnaire"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Purpose
 
-## Purpose
+        Please fill out one copy of this form per Translator application so we can plan its move into a single, standardized Helm chart repository. Your answers tell us how each application is deployed today, where its configuration lives, and what it will take to bring it into the shared setup.
 
-Please fill out one copy of this form per Translator application so we can plan its move into a single, standardized Helm chart repository. Your answers tell us how each application is deployed today, where its configuration lives, and what it will take to bring it into the shared setup.
+        "Not sure" is a useful answer, and partial answers are welcome.
 
-"Not sure" is a useful answer, and partial answers are welcome.
+  # ---------------------------------------------------------------
+  # Application Details
+  # ---------------------------------------------------------------
+  - type: markdown
+    attributes:
+      value: "## Application Details"
 
-## Application Details
+  - type: input
+    id: app-name
+    attributes:
+      label: "Application name"
+    validations:
+      required: true
+  - type: input
+    id: app-description
+    attributes:
+      label: "Short description"
+  - type: input
+    id: team
+    attributes:
+      label: "Team or organization"
+  - type: input
+    id: primary-contact
+    attributes:
+      label: "Primary contact"
+  - type: input
+    id: backup-contact
+    attributes:
+      label: "Backup contact"
+  - type: input
+    id: source-repo
+    attributes:
+      label: "Source code repository"
+  - type: input
+    id: chart-location
+    attributes:
+      label: "Helm chart location (repo and path)"
+  - type: input
+    id: image-registry
+    attributes:
+      label: "Image registry"
+  - type: textarea
+    id: deployed-urls
+    attributes:
+      label: "Deployed URLs (dev + one ITRB one)"
 
-| Field | Your answer |
-| --- | --- |
-| Application name |  |
-| Short description |  |
-| Team or organization |  |
-| Primary contact |  |
-| Backup contact |  |
-| Source code repository |  |
-| Helm chart location (repo and path) |  |
-| Image registry |  |
-| Deployed URLs (dev + one ITRB one) |  |
+  # ---------------------------------------------------------------
+  # Deployment Questionnaire
+  # ---------------------------------------------------------------
+  - type: markdown
+    attributes:
+      value: |
+        ## Deployment Questionnaire
 
-## Deployment Questionnaire
+        Think about: if we needed to deploy your application from scratch today, on all maturity levels, what are **all** the steps and configurations we would need? Are all of these things public and found easily? If the team members responsible for deploying your application today were all hit by a bus, how hard would it be for someone else to deploy the application? Can it be done with one helm command?
 
-Think about: if we needed to deploy your application from scratch today, on all maturity levels, what are **all** the steps and configurations we would need? Are all of these things public and found easily? If the team members responsible for deploying your application today were all hit by a bus, how hard would it be for someone else to deploy the application? Can it be done with one helm command?
+        Pick a short answer where there is one, and use Details for specifics: names, links, and anything we should know.
 
-Pick a short answer where there is one, and use Details for specifics: names, links, and anything we should know.
+  # ---------------------------------------------------------------
+  # Deployment today
+  # ---------------------------------------------------------------
+  - type: markdown
+    attributes:
+      value: "### Deployment today"
 
-### Deployment today
+  - type: dropdown
+    id: q1
+    attributes:
+      label: "1. Is your application deployed with Helm? If not, how?"
+      options: ["Yes", "No", "Partially", "Not sure"]
+  - type: textarea
+    id: q1-details
+    attributes:
+      label: "1. Details"
 
-| # | Question | Short answer | Details |
-| --- | --- | --- | --- |
-| 1 | Is your application deployed with Helm? If not, how? |  |  |
-| 2 | Do you have access to your Helm charts? Where do they live, and are they public? |  |  |
-| 3 | Are there deployment configurations that live outside the charts (values entered in Jenkins, by hand, ITRB-only files)? |  |  |
-| 4 | How are differences between maturity levels (dev, ci, test, prod) configured? |  |  |
-| 5 | How is a new version deployed today? Who triggers it, and through what (Jenkins job, ITRB ticket, other)? |  |  |
-| 6 | Do you need to deploy other services or containers as dependencies (databases, caches, data loaders, sidecars)? |  |  |
-| 6b | If yes, are they bundled in the same deployment configuration already, rather than deployed separately? |  |  |
+  - type: dropdown
+    id: q2
+    attributes:
+      label: "2. Do you have access to your Helm charts? Where do they live, and are they public?"
+      options: ["Yes", "No", "Partially", "Not sure"]
+  - type: textarea
+    id: q2-details
+    attributes:
+      label: "2. Details"
 
-### Configuration
+  - type: dropdown
+    id: q3
+    attributes:
+      label: "3. Are there deployment configurations that live outside the charts (values entered in Jenkins, by hand, ITRB-only files)?"
+      options: ["Yes", "No", "Partially", "Not sure"]
+  - type: textarea
+    id: q3-details
+    attributes:
+      label: "3. Details"
 
-| # | Question | Short answer | Details |
-| --- | --- | --- | --- |
-| 7 | Are all configurable endpoints, URLs, and settings set through environment variables? |  |  |
-| 8 | Do you rely on SmartAPI to find other services without an option to override the URL(s)? |  |  |
-| 9 | Which other Translator services or external APIs does your application call or depend on? |  |  |
-| 10 | Is your application ready to scale? Could it run as multiple replicas, and are its CPU and memory needs known? |  |  |
-| 11 | Does your application have a dedicated and lightweight health check endpoint? |  |  |
+  - type: textarea
+    id: q4
+    attributes:
+      label: "4. How are differences between maturity levels (dev, ci, test, prod) configured?"
 
-### Images and releases
+  - type: textarea
+    id: q5
+    attributes:
+      label: "5. How is a new version deployed today? Who triggers it, and through what (Jenkins job, ITRB ticket, other)?"
 
-| # | Question | Short answer | Details |
-| --- | --- | --- | --- |
-| 12 | Do you build and publish your own images? If yes, which registry (GHCR, Docker Hub, other). If ITRB builds them, from which repo? |  |  |
-| 13 | Do you create GitHub releases or git tags for versions you want deployed? |  |  |
+  - type: dropdown
+    id: q6
+    attributes:
+      label: "6. Do you need to deploy other services or containers as dependencies (databases, caches, data loaders, sidecars)?"
+      options: ["Yes", "No", "Partially", "Not sure"]
+  - type: textarea
+    id: q6-details
+    attributes:
+      label: "6. Details"
 
-### Secrets
+  - type: dropdown
+    id: q6b
+    attributes:
+      label: "6b. If yes, are they bundled in the same deployment configuration already, rather than deployed separately?"
+      options: ["Yes", "No", "Partially", "Not sure"]
+  - type: textarea
+    id: q6b-details
+    attributes:
+      label: "6b. Details"
 
-| # | Question | Short answer | Details |
-| --- | --- | --- | --- |
-| 14 | What secrets does your application need (API keys, passwords, tokens), and how are they managed today? |  |  |
+  # ---------------------------------------------------------------
+  # Configuration
+  # ---------------------------------------------------------------
+  - type: markdown
+    attributes:
+      value: "### Configuration"
 
-### Anything else
+  - type: dropdown
+    id: q7
+    attributes:
+      label: "7. Are all configurable endpoints, URLs, and settings set through environment variables?"
+      options: ["Yes", "No", "Partially", "Not sure"]
+  - type: textarea
+    id: q7-details
+    attributes:
+      label: "7. Details"
 
-| # | Question | Details |
-| --- | --- | --- |
-| 15 | Is there anything else we should know about your deployment? |  |
+  - type: dropdown
+    id: q8
+    attributes:
+      label: "8. Do you rely on SmartAPI to find other services without an option to override the URL(s)?"
+      options: ["Yes", "No", "Partially", "Not sure"]
+  - type: textarea
+    id: q8-details
+    attributes:
+      label: "8. Details"
 
+  - type: textarea
+    id: q9
+    attributes:
+      label: "9. Which other Translator services or external APIs does your application call or depend on?"
 
+  - type: dropdown
+    id: q10
+    attributes:
+      label: "10. Is your application ready to scale? Could it run as multiple replicas, and are its CPU and memory needs known?"
+      options: ["Yes", "No", "Partially", "Not sure"]
+  - type: textarea
+    id: q10-details
+    attributes:
+      label: "10. Details"
+
+  - type: dropdown
+    id: q11
+    attributes:
+      label: "11. Does your application have a dedicated and lightweight health check endpoint?"
+      options: ["Yes", "No", "Partially", "Not sure"]
+  - type: textarea
+    id: q11-details
+    attributes:
+      label: "11. Details"
+
+  # ---------------------------------------------------------------
+  # Images and releases
+  # ---------------------------------------------------------------
+  - type: markdown
+    attributes:
+      value: "### Images and releases"
+
+  - type: dropdown
+    id: q12
+    attributes:
+      label: "12. Do you build and publish your own images? If yes, which registry (GHCR, Docker Hub, other). If ITRB builds them, from which repo?"
+      options: ["Yes", "No", "Partially", "Not sure"]
+  - type: textarea
+    id: q12-details
+    attributes:
+      label: "12. Details"
+
+  - type: dropdown
+    id: q13
+    attributes:
+      label: "13. Do you create GitHub releases or git tags for versions you want deployed?"
+      options: ["Yes", "No", "Partially", "Not sure"]
+  - type: textarea
+    id: q13-details
+    attributes:
+      label: "13. Details"
+
+  # ---------------------------------------------------------------
+  # Secrets
+  # ---------------------------------------------------------------
+  - type: markdown
+    attributes:
+      value: "### Secrets"
+
+  - type: textarea
+    id: q14
+    attributes:
+      label: "14. What secrets does your application need (API keys, passwords, tokens), and how are they managed today?"
+
+  # ---------------------------------------------------------------
+  # Anything else
+  # ---------------------------------------------------------------
+  - type: markdown
+    attributes:
+      value: "### Anything else"
+
+  - type: textarea
+    id: q15
+    attributes:
+      label: "15. Is there anything else we should know about your deployment?"
