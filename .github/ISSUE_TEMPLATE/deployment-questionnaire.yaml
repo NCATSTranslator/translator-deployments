@@ -53,7 +53,7 @@ body:
     id: image-registry
     attributes:
       label: "Image registry"
-  - type: textarea
+  - type: input
     id: deployed-urls
     attributes:
       label: "Deployed URLs (dev + one ITRB one)"
