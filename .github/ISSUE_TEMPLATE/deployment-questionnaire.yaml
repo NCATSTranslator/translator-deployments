@@ -226,7 +226,8 @@ body:
   - type: textarea
     id: q14
     attributes:
-      label: "14. What secrets does your application need (API keys, passwords, tokens), and how are they managed today?"
+      label: "14. What secrets does your application need, and how are they managed today?"
+      description: "(API keys, passwords, tokens)"
 
   # ---------------------------------------------------------------
   # Anything else
